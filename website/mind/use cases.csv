@@ -1,0 +1,5 @@
+command,algorithm
+cluster this dataset,0
+cluster this dataset using kmeans,0
+cluster this dataset using dbscan,0
+cluster this dataset into 5 clusters using kmeans,0

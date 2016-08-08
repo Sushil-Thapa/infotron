@@ -1,0 +1,34 @@
+#inputbox{
+    margin-top: 10px;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+#fileinputbox{
+    /*text-align: center;*/
+}
+
+#infotronlogo{
+    margin-top: 13%;
+    margin-bottom: 50px;
+    text-align: center;
+     font-size: 500%;
+}
+
+/* Styling placeholder */
+::-webkit-input-placeholder {
+text-align: center;
+}
+
+:-moz-placeholder { /* older Firefox*/
+text-align: center;
+}
+
+::-moz-placeholder { /* Firefox 19+ */
+text-align: center;
+}
+
+:-ms-input-placeholder {
+text-align: center;
+}
+

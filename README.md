@@ -1,4 +1,4 @@
-﻿This is the source code of Infotron.
+﻿This is the source code of Infotron [INFOrmation Mining using PercepTRON].
 
 “Infotron” is a web application that takes natural language text input from the user, extracts required information from that input using controlled natural language processing, and uses that information to perform complex AI tasks such as classification, regression, clustering, market basket analysis, etc. as required by the user.
 

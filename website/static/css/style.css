@@ -9,7 +9,7 @@
 }
 
 #infotronlogo{
-    margin-top: 13%;
+    margin-top: 10px;
     margin-bottom: 50px;
     text-align: center;
      font-size: 500%;
@@ -31,4 +31,3 @@ text-align: center;
 :-ms-input-placeholder {
 text-align: center;
 }
-

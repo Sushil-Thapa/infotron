@@ -20,7 +20,7 @@ def home(request):
             mapper = Mapper()
             output = mapper.mapRE("Cluster", "mind/datasets/" + selectedFile, command)
 
-            messages.success(request, "Please wait while \"%s\" is executed on %s." % (command, selectedFile))
+            messages.success(request, "Please wait! \"%s\" is being executed on %s." % (command, selectedFile))
         else:
             messages.error(request, "Please select a file and type in a valid command.")
 
@@ -30,7 +30,7 @@ def home(request):
             datasets.append(file_name)
 
     args = {
-        'title': "infotron : Generic Research Assistant",
+        'title': "InfoTron : HOME",
         'command': request.POST.get('command'),
         'selectedFile': request.POST.get('selectedFile'),
         'output': output,

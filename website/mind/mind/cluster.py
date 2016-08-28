@@ -30,7 +30,7 @@ class MyKMeans(Cluster):
 
         if len(X[0]) == 2:
             _n_clusters = self.n_clusters.get()
-            k_means = KMeans(init='k-means++', n_clusters=_n_clusters, n_init=10)
+            k_means = KMeans(n_clusters=_n_clusters, init='k-means++',  n_init=10)
             t0 = time.time()
             k_means.fit(X)
             t_batch = time.time() - t0
@@ -55,9 +55,8 @@ class MyKMeans(Cluster):
                         markerfacecolor=col, marker='.')
                 plt.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col,
                         markeredgecolor='k', markersize=6)
-            plt.title('KMeans')
-            plt.text(-3.5, 1.8,  'train time: %.2fs\ninertia: %f' % (
-                t_batch, k_means.inertia_))
+            plt.title('KMeans Clustering')
+            plt.text(-3.5, 1.8,  'training time: %.2fs\ninertia: %f' % (t_batch, k_means.inertia_))
 
             plt.savefig('static/images/last_plot.png')
             return "Done..."

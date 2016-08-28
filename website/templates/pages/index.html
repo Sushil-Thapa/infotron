@@ -12,8 +12,6 @@
     {% endfor %}
   </ul>
   {% endif %}
-
-
   <div class="row">
     <form action="{% url 'home' %}" role="form" method="POST">
       {% csrf_token %}
@@ -23,8 +21,7 @@
           <div class="col-md-4 col-md-offset-4">
             <div class="input-group">
               <div class="input-group-btn">
-                <button id="dropdown1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" name="dropdown">Select Dataset <span class="caret"></span></button>
-
+                <button id="dropdown1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" name="dropdown">Choose Data <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu">
                 {% for dataset in datasets %}
                 <li onclick="$('#fileinputbox').val($(this).text());"><a href="#">{{ dataset }}</a></li>
@@ -45,7 +42,7 @@
       </div>
 
       {# go button #}
-      <div class="span7 text-center"><button type="submit" class="btn btn-default btn-primary btn-lg">Go</button></div>
+      <div class="span7 text-center"><button type="submit" class="btn btn-default btn-primary btn-lg">EXECUTE</button></div>
     </form>
     <hr>
     <div class="row">

@@ -56,6 +56,7 @@ class AssociationRules(Association):
         for rule in rules:
             print(rule[0])
             result = result + ", ".join(rule[0]) + " => " + ", ".join(rule[1]) + "\n"
+
             # result = result + ", ".join(rule[0]) + " => " + ", ".join(rule[1]) + ": " + str(rule[2]) + ", " + str(rule[3]) + "\n"
         # print(report)
         return result

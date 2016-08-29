@@ -44,19 +44,20 @@ class Outlier(Anomaly):
             Z1 = Z1.reshape(xx1.shape)
             legend1[clf_name] = plt.contour(
                 xx1, yy1, Z1, levels=[0], linewidths=2, colors=colors[i])
-            plt.contourf(xx1, yy1, Z1, levels=np.linspace(Z1.min(), 0, 7), cmap=plt.cm.Greens_r)
-            a = plt.contour(xx1, yy1, Z1, levels=[0], linewidths=2, colors='yellow')
-            plt.contourf(xx1, yy1, Z1, levels=[0, Z1.max()], colors='red')
+            plt.contourf(xx1, yy1, Z1, levels=np.linspace(Z1.min(), 0, 7), cmap=plt.cm.Blues_r)
+            a = plt.contour(xx1, yy1, Z1, levels=[0], linewidths=2, colors='red')
+            plt.contourf(xx1, yy1, Z1, levels=[0, Z1.max()], colors='orange')
 
         legend1_values_list = list( legend1.values() )
         legend1_keys_list = list( legend1.keys() )
 
         # Plot the results (= shape of the data points cloud)
         plt.figure(1)  # two clusters
-        plt.title("Outlier detection")
-        plt.scatter(X1[:, 0], X1[:, 1], color='black')
+        plt.title("Outlier Detection:")
+        plt.scatter(X1[:, 0], X1[:, 1], color='green')
         plt.xlim((xx1.min(), xx1.max()))
         plt.ylim((yy1.min(), yy1.max()))
+        plt.text(29.5, 87, ' Randomness=%s'% (conta))
         # plt.legend((legend1_values_list[0].collections[0],
         #             # legend1_values_list[1].collections[0],
         #             # legend1_values_list[2].collections[0]),

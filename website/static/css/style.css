@@ -1,6 +1,6 @@
 #inputbox{
-    margin-top: 10px;
-    margin-bottom: 50px;
+    margin-top: 13px;
+    margin-bottom: 10px;
     text-align: center;
 }
 
@@ -10,14 +10,14 @@
 
 #infotronlogo{
     margin-top: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 13px;
     text-align: center;
      font-size: 500%;
 }
 
 /* Styling placeholder */
 ::-webkit-input-placeholder {
-text-align: center;
+text-align: left;
 }
 
 :-moz-placeholder { /* older Firefox*/

@@ -1,5 +1,5 @@
-b,m
-b,d,r,e
-m,d,r,c
-b,m,d,r
-b,m,d,c
+Beer,Snacks,Milk
+Beer,Vodka,Meat,comics
+Snacks,Vodka,Meat,comics
+Beer,Snacks,Vodka,Meat
+Beer,Snacks

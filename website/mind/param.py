@@ -4,6 +4,7 @@ class Param:
     pass
 
 class Numeric(Param):
+    value=0
     def __init__(self,_keywords=None, _value=0):
         self.keywords = [re.compile(kw.replace("$","(?P<value>[-+]?[0-9]*[.]?[0-9]+|[0-9]+)")) for kw in _keywords]
         self.value = _value

@@ -13,7 +13,7 @@ class Regression(Mind):
 
 class MyPolyMulti(Regression):
     name = Alias(['regression','ridge','fit'])
-    degrees = NumArray(['(degree|degrees) $'])
+    degrees = NumArray(['(degree|degrees|order|power|powers|orders) $'])
 
     def execute(self,data_source):
         header = np.genfromtxt(data_source, dtype=None, delimiter=',', names=True)
@@ -30,13 +30,13 @@ class MyPolyMulti(Regression):
 
         plt.clf()
         # plt.plot(x_plot, y_plot, label="ground truth")
-        plt.scatter(x, y, label="training points")
+        plt.scatter(x, y, label="attributes")
 
         for degree in self.degrees.get():
             model = make_pipeline(PolynomialFeatures(degree), Ridge())
             model.fit(X, y)
             y_plot = model.predict(X_plot)
-            plt.plot(x_plot, y_plot, label="degree " + str(degree))
+            plt.plot(x_plot, y_plot, label="degrees: " + str(degree))
 
         plt.xlabel(header.dtype.names[0])
         plt.ylabel(header.dtype.names[1])

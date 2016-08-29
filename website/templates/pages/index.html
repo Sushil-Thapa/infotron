@@ -1,19 +1,28 @@
 {% extends "layout/base.html" %}
 {% load staticfiles %}
 {% block content %}
-
+<div class="inner" style="background-image: url({% static "static/css/cloud.jpg" %}");>
 <div class="container">
-  <div class="span7 bg-info text-center"> <h1 id="infotronlogo">InfoTron</h1></div>
+  <div class="span7 bg-info text-center"> <h1 id="infotronlogo">Welcome to INFOTRON.</h1></div>
 
-  {% if messages %}
-  <ul class="messages list-unstyled">
-    {% for message in messages %}
-    <li><div class="alert alert-{{ message.tags }} text-center" role="alert">{{ message }}</div></li>
-    {% endfor %}
-  </ul>
-  {% endif %}
+
   <div class="row">
     <form action="{% url 'home' %}" role="form" method="POST">
+        <html>
+                <body>
+                    <table  align="center">
+                         <tr>
+                             <td>
+                                 Upload New:
+                             </td>
+                             <td>
+                                 <input type="file" name="New File Upload" size="chars">
+                             </td>
+                         </tr>
+                    </table>
+                    <br />
+                </body>
+        </html>
       {% csrf_token %}
       {# file dropdown #}
       <div class="form-group">
@@ -21,7 +30,7 @@
           <div class="col-md-4 col-md-offset-4">
             <div class="input-group">
               <div class="input-group-btn">
-                <button id="dropdown1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" name="dropdown">Choose Data <span class="caret"></span></button>
+                <button id="dropdown1" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" name="dropdown">Select Recent <span class="caret"></span></button>
                 <ul class="dropdown-menu" role="menu">
                 {% for dataset in datasets %}
                 <li onclick="$('#fileinputbox').val($(this).text());"><a href="#">{{ dataset }}</a></li>
@@ -30,7 +39,7 @@
                   {# <li><a href="#">Export Statistics</a></li> #}
                 </ul>
               </div><!-- /btn-group -->
-              <input type="text" id="fileinputbox" name="selectedFile" value="{{ selectedFile }}" class="form-control">
+              <input type="text" id="fileinputbox" name="selectedFile" value="{{ selectedFile }}"  class="form-control">
             </div><!-- /input-group -->
           </div><!-- /.col-lg-6 -->
         </div><!-- /.row -->
@@ -44,10 +53,17 @@
       {# go button #}
       <div class="span7 text-center"><button type="submit" class="btn btn-default btn-primary btn-lg">EXECUTE</button></div>
     </form>
+    {% if messages %}
+    <ul class="messages list-unstyled">
+      {% for message in messages %}
+      <li><div class="alert alert-{{ message.tags }} text-center" role="alert">{{ message }}</div></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
     <hr>
     <div class="row">
       <div class="col-lg-6 col-lg-offset-3">
-          <div><p class="text-center">{{ output | linebreaks }}</p></div>
+          <div><p class="text-center" align= "center">{{ output | linebreaks }}</p></div>
         {# <h3>Last Plot: </h3> #}
           {% if not output or output == "Done..." %}
             <img src="static/images/last_plot.png">

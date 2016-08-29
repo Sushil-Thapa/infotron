@@ -19,9 +19,9 @@ class Cluster(Mind):
 
 class MyKMeans(Cluster):
     # specify aliases
-    name = Alias(['kmeans','cluster'])
+    name = Alias(['kmeans','cluster','groups','types'])
     # EASY.... now declare fields and specify related keywords
-    n_clusters = Numeric(['to $ (clusters|types)'])
+    n_clusters = Numeric(['(cluster|group|divide) (in|to|into) $ (cluster|clusters|types|type|group|groups)'])
     # std_dev = Numeric(['standard deviation $','sd $','std dev $'])
 
     # write execute function, everything happens here
@@ -29,9 +29,11 @@ class MyKMeans(Cluster):
         X = np.loadtxt(open(data_source,"rb"),delimiter=",",skiprows=1)
 
         if len(X[0]) == 2:
+            batch_size=45
             _n_clusters = self.n_clusters.get()
-            k_means = KMeans(n_clusters=_n_clusters, init='k-means++',  n_init=10)
+            #X, labels_true=make_blobs(n_samples=200,cluster_std=0.7)
             t0 = time.time()
+            k_means = KMeans(n_clusters=_n_clusters, init='k-means++',  n_init=10)
             k_means.fit(X)
             t_batch = time.time() - t0
             k_means_labels = k_means.labels_
@@ -43,20 +45,32 @@ class MyKMeans(Cluster):
 
             plt.clf()
 
-            a = np.arange(_n_clusters)
-            ys = [i+a+(i*a)**2 for i in range(_n_clusters)]
-            colors = cm.rainbow(np.linspace(0, 1, len(ys)))
+            fig, ax  = plt.subplots()
+            colors = ['#4EFFC5', '#FF9C34', '#4E9AFF']
 
-            # KMeans
             for k, col in zip(range(_n_clusters), colors):
                 my_members = k_means_labels == k
                 cluster_center = k_means_cluster_centers[k]
-                plt.plot(X[my_members, 0], X[my_members, 1], 'w',
+                ax.plot(X[my_members, 0], X[my_members, 1], 'w',
                         markerfacecolor=col, marker='.')
-                plt.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col,
+                ax.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col,
                         markeredgecolor='k', markersize=6)
-            plt.title('KMeans Clustering')
-            plt.text(-3.5, 1.8,  'training time: %.2fs\ninertia: %f' % (t_batch, k_means.inertia_))
+            ax.set_title('KMeans Clustering')
+            plt.text(0.01,0.9,'%s \nNumbers of clusters: %s \ntraining time: %.3fs \ninertia: %f' % (data_source,_n_clusters,t_batch,k_means.inertia_),ha='left', va='center', transform=ax.transAxes)
+            # a = np.arange(_n_clusters)
+            # ys = [i+a+(i*a)**2 for i in range(_n_clusters)]
+            # colors = cm.rainbow(np.linspace(0, 1, len(ys)))
+            #
+            # # KMeans
+            # for k, col in zip(range(_n_clusters), colors):
+            #     my_members = k_means_labels == k
+            #     cluster_center = k_means_cluster_centers[k]
+            #     plt.plot(X[my_members, 0], X[my_members, 1], 'w',
+            #             markerfacecolor=col, marker='.')
+            #     plt.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col,
+            #             markeredgecolor='k', markersize=6)
+            # plt.title('KMeans Clustering')
+            # plt.text(-3.5, 1.8,  'training time: %.2fs \ninertia: %f' % (t_batch, k_means.inertia_))
 
             plt.savefig('static/images/last_plot.png')
             return "Done..."
@@ -80,66 +94,63 @@ class MyKMeans(Cluster):
                 ax.w_xaxis.set_ticklabels([])
                 ax.w_yaxis.set_ticklabels([])
                 ax.w_zaxis.set_ticklabels([])
-                ax.set_xlabel('X')
-                ax.set_ylabel('Y')
-                ax.set_zlabel('Z')
+                ax.set_xlabel('X-Axis')
+                ax.set_ylabel('Y-axis')
+                ax.set_zlabel('Z-axis')
                 fignum = fignum + 1
-
             plt.savefig('static/images/last_plot.png')
             return "Done..."
 
-class MyDBSCAN(Cluster):
-    name = Alias(['cluster','dbscan'])
-
-    def execute(self,data_source):
-
-        X = np.loadtxt(open(data_source,"rb"),delimiter=",",skiprows=1)
-
-
-        # X = StandardScaler().fit_transform(X)
-        # Compute DBSCAN
-        db = DBSCAN(eps=0.095).fit(X)
-        core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-        core_samples_mask[db.core_sample_indices_] = True
-        labels = db.labels_
-
-        # Number of clusters in labels, ignoring noise if present.
-        n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
-
-        print('Estimated number of clusters: %d' % n_clusters_)
-        # print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
-        # print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
-        # print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
-        # print("Adjusted Rand Index: %0.3f"
-        #       % metrics.adjusted_rand_score(labels_true, labels))
-        # print("Adjusted Mutual Information: %0.3f"
-        #       % metrics.adjusted_mutual_info_score(labels_true, labels))
-        # print("Silhouette Coefficient: %0.3f"
-        #       % metrics.silhouette_score(X, labels))
-
-        ##############################################################################
-        # Plot result
-        import matplotlib.pyplot as plt
-        plt.clf()
-        # Black removed and is used for noise instead.
-        unique_labels = set(labels)
-        colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
-        for k, col in zip(unique_labels, colors):
-            if k == -1:
-                # Black used for noise.
-                col = 'k'
-
-            class_member_mask = (labels == k)
-
-            xy = X[class_member_mask & core_samples_mask]
-            plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
-                     markeredgecolor='k', markersize=14)
-
-            xy = X[class_member_mask & ~core_samples_mask]
-            plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
-                     markeredgecolor='k', markersize=6)
-
-        plt.title('Estimated number of clusters: %d' % n_clusters_)
-        plt.savefig('static/images/last_plot.png')
-        return "Done..."
-        # plt.show()
+# class MyDBSCAN(Cluster):
+#     name = Alias(['dbscan'])
+#     def execute(self,data_source):
+#         X = np.loadtxt(open(data_source,"rb"),delimiter=",",skiprows=1)
+#
+#
+#         # X = StandardScaler().fit_transform(X)
+#         # Compute DBSCAN
+#         db = DBSCAN(eps=0.095).fit(X)
+#         core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+#         core_samples_mask[db.core_sample_indices_] = True
+#         labels = db.labels_
+#
+#         # Number of clusters in labels, ignoring noise if present.
+#         n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+#
+#         print('Estimated number of clusters: %d' % n_clusters_)
+#         # print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))
+#         # print("Completeness: %0.3f" % metrics.completeness_score(labels_true, labels))
+#         # print("V-measure: %0.3f" % metrics.v_measure_score(labels_true, labels))
+#         # print("Adjusted Rand Index: %0.3f"
+#         #       % metrics.adjusted_rand_score(labels_true, labels))
+#         # print("Adjusted Mutual Information: %0.3f"
+#         #       % metrics.adjusted_mutual_info_score(labels_true, labels))
+#         # print("Silhouette Coefficient: %0.3f"
+#         #       % metrics.silhouette_score(X, labels))
+#
+#         ##############################################################################
+#         # Plot result
+#         import matplotlib.pyplot as plt
+#         plt.clf()
+#         # Black removed and is used for noise instead.
+#         unique_labels = set(labels)
+#         colors = plt.cm.Spectral(np.linspace(0, 1, len(unique_labels)))
+#         for k, col in zip(unique_labels, colors):
+#             if k == -1:
+#                 # Black used for noise.
+#                 col = 'k'
+#
+#             class_member_mask = (labels == k)
+#
+#             xy = X[class_member_mask & core_samples_mask]
+#             plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+#                      markeredgecolor='k', markersize=14)
+#
+#             xy = X[class_member_mask & ~core_samples_mask]
+#             plt.plot(xy[:, 0], xy[:, 1], 'o', markerfacecolor=col,
+#                      markeredgecolor='k', markersize=6)
+#
+#         plt.title('DBSCAN Clustering \n Estimated number of clusters: %d' % n_clusters_)
+#         plt.savefig('static/images/last_plot.png')
+#         return "Done..."
+#         # plt.show()
